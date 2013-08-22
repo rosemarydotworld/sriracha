@@ -35,7 +35,6 @@
 #   }
 #
 # Yields scope in which unless() was run.
-}
 @func XMLNode.unless(Text %xpath) {
   $("self::*[not(" + %xpath + ")]") {
     yield()
