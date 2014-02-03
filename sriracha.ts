@@ -4,7 +4,7 @@
 #
 # Examples
 #
-#   $(".//div[@id='to-be-hidden']") {
+#   $(".//dihv[@id='to-be-hidden']") {
 #     hide()
 #   }
 #
@@ -12,15 +12,13 @@
 #
 # Yields scope of hidden element.
 @func XMLNode.hide(Text %xpath) {
-  match_not(%xpath, /^.+$/) {
+  $(%xpath) {
     add_class("mw-hide")
+    yield()
   }
-  else() {
-    $(%xpath) {
-      add_class("mw-hide")
-    }
-  }
-
+}
+@func XMLNode.hide() {
+  add_class("mw-hide")
   yield()
 }
 
@@ -39,4 +37,69 @@
   $("self::*[not(" + %xpath + ")]") {
     yield()
   }
+}
+
+# XMLNode: Execute arbitrary code in current scope if xpath returns matches
+#
+# %xpath - xpath string to attempt to match.
+#
+# Examples
+#
+#   has(".//div[@id='condition']") {
+#     log("#condition satisfied!")
+#   }
+#
+# Yields scope in which has() was run.
+@func XMLNode.has(Text %xpath) {
+  $("self::*[" + %xpath + "]") {
+    yield()
+  }
+}
+
+# XMLNode: Move node to the bottom of its parent
+#
+# %xpath - xpath string to attempt to match.
+#
+# Examples
+#
+#   to_bottom("./div[@id='test']")
+#
+#   $("./div[@id='test']") {
+#     to_bottom()
+#   }
+#
+# Yields scope in which to_bottom() was run.
+@func XMLNode.to_bottom(Text %xpath) {
+  $(%xpath) {
+    move_to("parent::*", "bottom")
+    yield()
+  }
+}
+@func XMLNode.to_bottom() {
+  move_to("parent::*", "bottom")
+  yield()
+}
+
+# XMLNode: Move node to the top of its parent
+#
+# %xpath - xpath string to attempt to match.
+#
+# Examples
+#
+#   to_top("./div[@id='test']")
+#
+#   $("./div[@id='test']") {
+#     to_top()
+#   }
+#
+# Yields scope in which to_bottom() was run.
+@func XMLNode.to_top(Text %xpath) {
+  $(%xpath) {
+    move_to("parent::*", "top")
+    yield()
+  }
+}
+@func XMLNode.to_top() {
+  move_to("parent::*", "top")
+  yield()
 }
