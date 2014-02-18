@@ -103,3 +103,24 @@
   move_to("parent::*", "top")
   yield()
 }
+
+# XMLNode: Loop the yielded code as many times as the argument
+#
+# %count - Number of times to loop.
+# NOTE: %count cannot exceed the number of direct children to the body
+#
+# Examples
+#
+#   times("10") {
+#     do_something()
+#   }
+#
+# Yields scope in which times() was run.
+@func XMLNode.times(Text %count) {
+  %p = path()
+  $("/html/body/*[position() <= " + %count + "]") {
+    $(%p) {
+      yield()
+    }
+  }
+}
