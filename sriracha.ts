@@ -124,3 +124,22 @@
     }
   }
 }
+
+# XMLNode: Add a class to an element, then yield to do whatever else you might need to do.
+#
+# %xpath - The xpath to the thing you want to add the class to.
+# %class - The class that you want to be added
+#
+# Examples
+#
+#   add_class_to(".//blue", "never-nude") {
+#     blue_yourself()
+#   }
+#
+# Yields on whichever element the xpath goes to. 
+@func XMLNode.add_class_to(Text %xpath, Text %class) {
+  $(%xpath) {
+    add_class(%class)
+    yield()
+  }
+}
